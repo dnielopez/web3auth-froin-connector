@@ -1,0 +1,28 @@
+{
+  "name": "web3auth-froin-connector",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@solana/web3.js": "^1.99.0",
+    "@web3auth/base": "^9.7.0",
+    "@web3auth/modal": "^10.16.0",
+    "@web3auth/solana-provider": "^9.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2"
+  }
+}
