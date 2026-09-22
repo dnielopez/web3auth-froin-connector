@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup",
-    "dev": "tsup --watch"
+    "build": "npx tsup",
+    "dev": "npx tsup --watch"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@solana/web3.js": "^1.99.0",
     "@web3auth/base": "^9.7.0",
-    "@web3auth/modal": "^10.16.0",
+    "@web3auth/modal": "^11.4.1",
     "@web3auth/solana-provider": "^9.7.0"
   },
   "devDependencies": {

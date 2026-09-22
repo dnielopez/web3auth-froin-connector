@@ -1,38 +1,49 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { Web3Auth } from "@web3auth/modal";
-import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { createContext, useState, useEffect, useCallback } from "react";
+import { Web3Auth, WEB3AUTH_NETWORK, CHAIN_NAMESPACES } from "@web3auth/modal";
 
 export const FroinAuthContext = createContext<any>(null);
 
-export const FroinWeb3AuthProvider = ({ children, clientId, network = "sapphire_devnet" }: any) => {
+const SOLANA_DEVNET_CHAIN_ID = "0x3"; // Solana devnet in web3auth's numeric-as-hex convention
+
+export const FroinWeb3AuthProvider = ({
+  children,
+  clientId,
+  network = WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+}: any) => {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<any>(null);
 
+  const initWeb3Auth = useCallback(async () => {
+    if (web3auth !== null) return;
+    try {
+      const w3a = new Web3Auth({
+        clientId,
+        web3AuthNetwork: network,
+      });
+      await w3a.init();
+      setWeb3auth(w3a);
+      if (w3a.provider) setProvider(w3a.provider);
+    } catch (error) {
+      console.error("Web3Auth init failed", error);
+    }
+  }, [clientId, network, web3auth]);
+
   useEffect(() => {
-    const init = async () => {
-      try {
-        const privateKeyProvider = new SolanaPrivateKeyProvider({
-          config: { chainConfig: { chainNamespace: "solana", chainId: "0x3", rpcTarget: "https://api.devnet.solana.com", displayName: "Solana Devnet", ticker: "SOL", tickerName: "Solana" } }
-        });
-        const w3a = new Web3Auth({
-          clientId,
-          web3AuthNetwork: network,
-          privateKeyProvider,
-        });
-        await w3a.initModal();
-        setWeb3auth(w3a);
-        if (w3a.provider) setProvider(w3a.provider);
-      } catch (error) {
-        console.error("Web3Auth init failed", error);
-      }
-    };
-    init();
+    if (web3auth === null) {
+      initWeb3Auth();
+    }
   }, [clientId, network]);
 
   const login = async () => {
     if (!web3auth) return;
-    const p = await web3auth.connect();
-    setProvider(p);
+    try {
+      const p = await web3auth.connect();
+      if (web3auth.connected) {
+        setProvider(p);
+      }
+    } catch (error) {
+      console.error("Web3Auth login failed", error);
+    }
   };
 
   const logout = async () => {
