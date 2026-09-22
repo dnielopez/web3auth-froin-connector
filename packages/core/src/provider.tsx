@@ -1,9 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from "react";
-import { Web3Auth, WEB3AUTH_NETWORK, CHAIN_NAMESPACES } from "@web3auth/modal";
+import { Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 
 export const FroinAuthContext = createContext<any>(null);
-
-const SOLANA_DEVNET_CHAIN_ID = "0x3"; // Solana devnet in web3auth's numeric-as-hex convention
 
 export const FroinWeb3AuthProvider = ({
   children,
