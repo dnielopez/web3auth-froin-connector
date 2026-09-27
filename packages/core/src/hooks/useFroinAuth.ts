@@ -5,5 +5,6 @@ export const useFroinAuth = () => {
   const context = useContext(FroinAuthContext);
   if (!context)
     throw new Error("useFroinAuth must be used within FroinWeb3AuthProvider");
+  // context shape: { provider, isConnected, userInfo, login, logout }
   return context;
 };
